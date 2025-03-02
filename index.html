@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <details class="rules-section">
+        <summary><strong>Employee Management System Rules</strong> <em>(Click to Expand)</em></summary>
+        <p><em>Last Updated: February 26, 2025</em></p>
+        <ol>
+            <li><strong>Carry Forward of Overtime and Leave Balance</strong>:
+                <ul>
+                    <li>When switching to a new financial year (e.g., 2024-25 to 2025-26):</li>
+                    <li><strong>Employees</strong>: All registered employees are carried forward from the previous financial year.</li>
+                    <li><strong>Field Overtime</strong>: 
+                        <ul>
+                            <li>Full year Field OT (April 1 - March 31) + prior balance - average Field OT of all employees; can be negative (e.g., 45 - 52 = -7).</li>
+                            <li>Negative leave balance adds to Field OT (e.g., -11 leave → +11 Field OT).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Panel Overtime</strong>: 
+                        <ul>
+                            <li>Reset to 0 every December 31st; only January 1 - March 31 carried forward.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Leave Balance</strong>: 
+                        <ul>
+                            <li>Total Count leave taken - 36; if negative, set to 0, add absolute value to Field OT.</li>
+                            <li>Example: 25 leave - 36 = -11 → leave = 0, Field OT += 11.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>CCL (Overtime on Off Days)</strong>:
+                <ul>
+                    <li>Counted as 1 per occurrence; adds 1.5 to Panel OT or Field OT balance based on type.</li>
+                    <li>Example: 3 CCL Field OT → Total CCL = 3, Field OT += 4.5.</li>
+                </ul>
+            </li>
+            <li><strong>Leave, Overtime, and Balance Deletion</strong>:
+                <ul>
+                    <li>Only position 1-2 can delete.</li>
+                </ul>
+            </li>
+            <li><strong>Leave, Overtime, and Balance Edit Approval</strong>:
+                <ul>
+                    <li>Only position 1-2 can approve; requires both for leave, overtime, and balance edits (Panel OT, Field OT, Leave).</li>
+                </ul>
+            </li>
+            <li><strong>Entry</strong>: Any employee can submit OT/leave.</li>
+            <li><strong>Position Swapping</strong>:
+                <ul>
+                    <li>Only position 1-2 can swap employee positions.</li>
+                </ul>
+            </li>
+        </ol>
+    </details>
+
+    <!-- Landing Section -->
+    <div id="landingSection">
+        <h1>WELCOME TO LRU</h1>
+        <p>OT AND LEAVE MANAGEMENT SYSTEM</p>
+        <button id="loginBtn" onclick="showLoginSection()"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button id="registerBtn" onclick="showRegisterSection()"><i class="fas fa-user-plus"></i> Register</button>
+    </div>
+
+    <!-- Login Section -->
+    <div id="loginSection">
+        <h1>Login</h1>
+        <form id="loginForm" onsubmit="login(event)">
+            <label for="loginUserId"><i class="fas fa-user"></i> User ID:</label>
+            <input type="text" id="loginUserId" required>
+            <label for="loginPassword"><i class="fas fa-lock"></i> Password:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <button type="button" onclick="showResetPassword()" style="background: #3498db; margin-top: 10px;"><i class="fas fa-key"></i> Forgot Password</button>
+            <button type="button" onclick="showLandingSection()" style="background: #3498db; margin-top: 10px;"><i class="fas fa-arrow-left"></i> Back</button>
+        </form>
+    </div>
+
+    <!-- Reset Password Section -->
+    <div id="resetPasswordSection">
+        <h1>Reset Password</h1>
+        <form id="resetPasswordForm" onsubmit="resetPassword(event)">
+            <label for="resetUserId"><i class="fas fa-user"></i> User ID:</label>
+            <input type="text" id="resetUserId" required>
+            <label for="adminSerial"><i class="fas fa-user-shield"></i> Admin Serial (1-2):</label>
+            <input type="number" id="adminSerial" min="1" max="2" required>
+            <label for="adminPassword"><i class="fas fa-lock"></i> Admin Password:</label>
+            <input type="password" id="adminPassword" required>
+            <label for="newPassword"><i class="fas fa-lock"></i> New Password:</label>
+            <input type="password" id="newPassword" required>
+            <button type="submit"><i class="fas fa-check"></i> Reset Password</button>
+            <button type="button" onclick="showLoginSection()" style="background: #3498db; margin-top: 10px;"><i class="fas fa-arrow-left"></i> Back to Login</button>
+        </form>
+    </div>
+
+    <!-- Register Section (For Initial Registration) -->
+    <div id="registerSection">
+        <h1>Register</h1>
+        <form id="initialEmployeeForm" onsubmit="registerInitialEmployee(event)">
+            <label for="initialEmpName"><i class="fas fa-user"></i> Name (User ID):</label>
+            <input type="text" id="initialEmpName" required>
+            <label for="initialEmpGroup"><i class="fas fa-users"></i> Group:</label>
+            <select id="initialEmpGroup" required>
+                <option value="A">A (Off: Thursday)</option>
+                <option value="B">B (Off: Friday)</option>
+                <option value="C">C (Off: Saturday)</option>
+                <option value="D">D (Off: Sunday)</option>
+                <option value="E">E (Off: Monday)</option>
+                <option value="F">F (Off: Tuesday)</option>
+                <option value="G">G (Off: Wednesday)</option>
+            </select>
+            <label for="initialEmpPassword"><i class="fas fa-lock"></i> Password:</label>
+            <input type="password" id="initialEmpPassword" required>
+            <button type="submit"><i class="fas fa-save"></i> Register</button>
+            <button type="button" onclick="showLandingSection()" style="background: #3498db; margin-top: 10px;"><i class="fas fa-arrow-left"></i> Back</button>
+        </form>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal">
+        <div class="modal-content">
+            <p id="deleteMessage"></p>
+            <button id="confirmDelete">Confirm</button>
+            <button id="cancelDelete">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Notification Div -->
+    <div id="notification"></div>
+
+    <div class="container">
+        <h1>Employee Management System</h1>
+        <div id="loggedInUser"></div>
+        <button onclick="logout()" style="float: right; background: #e74c3c; padding: 10px; margin-bottom: 20px;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+
+        <!-- Year Selection -->
+        <div class="year-selection">
+            <label for="year"><i class="fas fa-calendar-alt"></i> Financial Year:</label>
+            <select id="year" onchange="loadFinancialYearData()"></select>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="active" onclick="openTab('registration')"><i class="fas fa-user-plus"></i> Registration</button>
+            <button onclick="openTab('overtime')"><i class="fas fa-clock"></i> Overtime Entry</button>
+            <button onclick="openTab('leave')"><i class="fas fa-calendar-times"></i> Leave Entry</button>
+            <button onclick="openTab('search')"><i class="fas fa-search"></i> Search</button>
+            <button onclick="openTab('statistics')"><i class="fas fa-chart-bar"></i> Statistics</button>
+            <button onclick="openTab('groupCombo')"><i class="fas fa-users-cog"></i> Group Combination</button>
+        </div>
+
+        <!-- Registration Tab -->
+        <div id="registration" class="tab active">
+            <h2><i class="fas fa-user-edit"></i> Registered Employees</h2>
+            <div id="employeeList"></div>
+            <div id="registerFormContainer" style="display:none;">
+                <form id="employeeForm" onsubmit="registerEmployee(event)">
+                    <label for="empName"><i class="fas fa-user"></i> Name (User ID):</label>
+                    <input type="text" id="empName" required>
+                    <label for="empGroup"><i class="fas fa-users"></i> Group:</label>
+                    <select id="empGroup" required>
+                        <option value="A">A (Off: Thursday)</option>
+                        <option value="B">B (Off: Friday)</option>
+                        <option value="C">C (Off: Saturday)</option>
+                        <option value="D">D (Off: Sunday)</option>
+                        <option value="E">E (Off: Monday)</option>
+                        <option value="F">F (Off: Tuesday)</option>
+                        <option value="G">G (Off: Wednesday)</option>
+                    </select>
+                    <label for="empPassword"><i class="fas fa-lock"></i> Password:</label>
+                    <input type="password" id="empPassword" required>
+                    <button type="submit"><i class="fas fa-save"></i> Register</button>
+                </form>
+            </div>
+            <button id="swapPositionBtn" onclick="promptSwapPositions()" style="display:none;"><i class="fas fa-exchange-alt"></i> Swap Positions</button>
+        </div>
+
+        <!-- Overtime Tab -->
+        <div id="overtime" class="tab">
+            <h2><i class="fas fa-clock"></i> Overtime Entry</h2>
+            <form id="overtimeForm" onsubmit="submitOvertime(event)">
+                <label for="overtimeEmployee"><i class="fas fa-user"></i> Employee:</label>
+                <select id="overtimeEmployee" required></select>
+                <label for="overtimeDate"><i class="fas fa-calendar-day"></i> Overtime Date:</label>
+                <input type="date" id="overtimeDate" required>
+                <label for="overtimeType"><i class="fas fa-tasks"></i> Overtime Type:</label>
+                <select id="overtimeType" required>
+                    <option value="Panel">Panel</option>
+                    <option value="Field">Field</option>
+                    <option value="Free">Free</option>
+                </select>
+                <label for="overtimeCategory"><i class="fas fa-sun"></i> Overtime Category:</label>
+                <select id="overtimeCategory" required>
+                    <option value="Morning">Morning</option>
+                    <option value="Evening">Evening</option>
+                    <option value="Night">Night</option>
+                </select>
+                <button type="submit"><i class="fas fa-check"></i> Submit Overtime</button>
+            </form>
+            <div id="overtimeList"></div>
+            <h2><i class="fas fa-balance-scale"></i> Overtime Balances</h2>
+            <div id="overtimeBalanceList"></div>
+            <button id="resetPanelOTBtn" onclick="resetPanelOvertime()" style="display:none;"><i class="fas fa-sync-alt"></i> Reset Panel OT</button>
+        </div>
+
+        <!-- Leave Entry Tab -->
+        <div id="leave" class="tab">
+            <h2><i class="fas fa-calendar-times"></i> Leave Entry</h2>
+            <form id="leaveForm" onsubmit="submitLeave(event)">
+                <label for="leaveEmployee"><i class="fas fa-user"></i> Employee:</label>
+                <select id="leaveEmployee" required></select>
+                <label for="startDate"><i class="fas fa-calendar-day"></i> Start Date:</label>
+                <input type="date" id="startDate" required oninput="calculateLeaveDays()">
+                <label for="endDate"><i class="fas fa-calendar-day"></i> End Date:</label>
+                <input type="date" id="endDate" required oninput="calculateLeaveDays()">
+                <label for="leaveType"><i class="fas fa-list"></i> Leave Type:</label>
+                <select id="leaveType" required>
+                    <option value="Count">Count</option>
+                    <option value="Free">Free</option>
+                </select>
+                <label for="leaveDays"><i class="fas fa-calculator"></i> Leave Days:</label>
+                <input type="number" id="leaveDays" readonly>
+                <button type="submit"><i class="fas fa-check"></i> Submit Leave</button>
+            </form>
+            <div id="leaveList"></div>
+            <h2><i class="fas fa-balance-scale"></i> Leave Balances</h2>
+            <div id="leaveBalanceList"></div>
+        </div>
+
+        <!-- Search Tab -->
+        <div id="search" class="tab">
+            <h2><i class="fas fa-search"></i> Search</h2>
+            <form id="searchForm" onsubmit="performSearch(event)">
+                <label for="searchEmployee"><i class="fas fa-user"></i> Employee:</label>
+                <select id="searchEmployee" required>
+                    <option value="" disabled selected>Select Employee</option>
+                </select>
+                <label for="searchType"><i class="fas fa-filter"></i> Search Type:</label>
+                <select id="searchType" required>
+                    <option value="overtime">Overtime (All OT)</option>
+                    <option value="panelOvertime">Panel OT</option>
+                    <option value="freeOvertime">Free Overtime</option>
+                    <option value="ccl">CCL (Overtime on Off Days)</option>
+                    <option value="leave">Leave (All Leave)</option>
+                    <option value="leaveDrain">Leave Drain (Free Leave)</option>
+                </select>
+                <label for="searchStartDate"><i class="fas fa-calendar-day"></i> Start Date:</label>
+                <input type="date" id="searchStartDate" required>
+                <label for="searchEndDate"><i class="fas fa-calendar-day"></i> End Date:</label>
+                <input type="date" id="searchEndDate" required>
+                <label for="searchYear"><i class="fas fa-calendar-alt"></i> Year:</label>
+                <select id="searchYear" required></select>
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
+            <div id="searchResults"></div>
+        </div>
+
+        <!-- Statistics Tab -->
+        <div id="statistics" class="tab">
+            <h2><i class="fas fa-chart-bar"></i> Statistics</h2>
+            <div id="statsList"></div>
+            <button onclick="generateMonthlyReport()" style="background: #3498db; color: white; padding: 10px; margin-top: 20px;">Generate Monthly Report (PDF)</button>
+        </div>
+
+        <!-- Group Combination Tab -->
+        <div id="groupCombo" class="tab">
+            <h2><i class="fas fa-users-cog"></i> Group Combination</h2>
+            <div class="sub-tab-nav">
+                <button class="active" onclick="openGroupTab('AD')"><i class="fas fa-users"></i> AD</button>
+                <button onclick="openGroupTab('AE')"><i class="fas fa-users"></i> AE</button>
+                <button onclick="openGroupTab('BE')"><i class="fas fa-users"></i> BE</button>
+                <button onclick="openGroupTab('BF')"><i class="fas fa-users"></i> BF</button>
+                <button onclick="openGroupTab('CF')"><i class="fas fa-users"></i> CF</button>
+                <button onclick="openGroupTab('CG')"><i class="fas fa-users"></i> CG</button>
+                <button onclick="openGroupTab('DG')"><i class="fas fa-users"></i> DG</button>
+            </div>
+            <div id="groupComboList"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

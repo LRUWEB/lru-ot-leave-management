@@ -1,0 +1,451 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.rules-section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rules-section summary {
+    cursor: pointer;
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.rules-section summary:hover {
+    color: #3498db;
+}
+
+.rules-section p, .rules-section li {
+    color: #34495e;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.rules-section em {
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    overflow: hidden;
+    position: relative;
+    display: none;
+}
+
+#landingSection, #loginSection, #resetPasswordSection, #registerSection {
+    max-width: 400px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+#landingSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+#landingSection p {
+    color: #34495e;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#loginSection, #resetPasswordSection, #registerSection {
+    display: none;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+#loggedInUser {
+    text-align: center;
+    color: #34495e;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.year-selection {
+    background: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.year-selection label {
+    color: #34495e;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.year-selection select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.year-selection select:hover {
+    color: #3498db;
+}
+
+.tab-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-nav button {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: #ecf0f1;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 10px 10px 0 0;
+    font-weight: 500;
+}
+
+.tab-nav button.active {
+    background: #3498db;
+    color: white;
+}
+
+.tab-nav button:hover:not(.active) {
+    background: #dfe6e9;
+    color: #2c3e50;
+}
+
+.tab {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab.active {
+    display: block;
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+form {
+    display: grid;
+    gap: 15px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+label {
+    color: #34495e;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+button[type="submit"], #loginBtn, #registerBtn {
+    background: #2ecc71;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-weight: 500;
+}
+
+button[type="submit"]:hover, #loginBtn:hover, #registerBtn:hover {
+    background: #27ae60;
+}
+
+#employeeList, #overtimeList, #leaveList, #leaveBalanceList, #searchResults, #statsList, #groupComboList {
+    margin-top: 20px;
+}
+
+#employeeList p, #overtimeList p, #leaveList p, #leaveBalanceList p, #searchResults p, #statsList p, #groupComboList p {
+    background: #fff;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+#employeeList p:hover, #overtimeList p:hover, #leaveList p:hover, #leaveBalanceList p:hover, #searchResults p:hover, #statsList p:hover, #groupComboList p:hover {
+    transform: translateY(-2px);
+}
+
+#overtimeBalanceList table, #leaveBalanceList table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+#overtimeBalanceList th, #overtimeBalanceList td, #leaveBalanceList th, #leaveBalanceList td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+#overtimeBalanceList th, #leaveBalanceList th {
+    background: #ecf0f1;
+    color: #34495e;
+    font-weight: 500;
+}
+
+#overtimeBalanceList td input, #leaveBalanceList td input {
+    width: 60px;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+#overtimeBalanceList td span, #leaveBalanceList td span {
+    margin-right: 10px;
+}
+
+#resetPanelOTBtn, #swapPositionBtn {
+    background: #e74c3c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+#resetPanelOTBtn:hover, #swapPositionBtn:hover {
+    background: #c0392b;
+}
+
+.delete {
+    background: #e74c3c;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.delete:hover {
+    background: #c0392b;
+}
+
+.pending {
+    background: #fff3cd;
+}
+
+button[onclick^="approveOvertime"], button[onclick^="approveLeave"], button[onclick^="approvePanelEdit"], button[onclick^="approveFieldEdit"], button[onclick^="approveLeaveEdit"] {
+    background: #3498db;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button[onclick^="approveOvertime"]:hover, button[onclick^="approveLeave"]:hover, button[onclick^="approvePanelEdit"]:hover, button[onclick^="approveFieldEdit"]:hover, button[onclick^="approveLeaveEdit"]:hover {
+    background: #2980b9;
+}
+
+.sub-tab-nav {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    background: #ecf0f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sub-tab-nav button {
+    padding: 10px 15px;
+    border: none;
+    background: #dfe6e9;
+    color: #34495e;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.sub-tab-nav button.active {
+    background: #3498db;
+    color: white;
+}
+
+.sub-tab-nav button:hover:not(.active) {
+    background: #bdc3c7;
+}
+
+#deleteModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 20% auto;
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#confirmDelete {
+    background: #e74c3c;
+    color: white;
+}
+
+#confirmDelete:hover {
+    background: #c0392b;
+}
+
+#cancelDelete {
+    background: #3498db;
+    color: white;
+}
+
+#cancelDelete:hover {
+    background: #2980b9;
+}
+
+#notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2ecc71;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 2000;
+    display: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .container, #landingSection, #loginSection, #resetPasswordSection, #registerSection {
+        padding: 15px;
+    }
+    .tab-nav, .sub-tab-nav {
+        flex-direction: column;
+    }
+    .year-selection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #overtimeBalanceList table, #overtimeBalanceList thead, #overtimeBalanceList tbody, #overtimeBalanceList th, #overtimeBalanceList td, #overtimeBalanceList tr,
+    #leaveBalanceList table, #leaveBalanceList thead, #leaveBalanceList tbody, #leaveBalanceList th, #leaveBalanceList td, #leaveBalanceList tr {
+        display: block;
+    }
+    #overtimeBalanceList th, #leaveBalanceList th {
+        display: none;
+    }
+    #overtimeBalanceList td, #leaveBalanceList td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+    }
+    #overtimeBalanceList td:before, #leaveBalanceList td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 500;
+        color: #34495e;
+    }
+}
